@@ -1,7 +1,7 @@
 #include "hooks.hpp"
 
 DWORD WINAPI MainThread(LPVOID param) {
-
+	Sleep(5000);
 	AllocConsole();
 	FILE* Dummy;
 	freopen_s(&Dummy, "CONOUT$", "w", stdout);
