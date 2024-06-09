@@ -1,11 +1,21 @@
 #include "hooks.hpp"
 
 DWORD WINAPI MainThread(LPVOID param) {
+	// sleep 5 seconds so UE can prepare itself (if we load at process start rather than post-launch injection)
 	Sleep(5000);
-	AllocConsole();
-	FILE* Dummy;
-	freopen_s(&Dummy, "CONOUT$", "w", stdout);
-	freopen_s(&Dummy, "CONIN$", "r", stdin);
+
+	// in Release builds check env variable FESTNET_DEBUG to see if we should enable the console
+	// the console causes issues in gamescope
+#ifdef NDEBUG
+	if (GetEnvironmentVariableA("FESTNET_DEBUG", NULL, 0) != 0) {
+#endif
+		AllocConsole();
+		FILE* Dummy;
+		freopen_s(&Dummy, "CONOUT$", "w", stdout);
+		freopen_s(&Dummy, "CONIN$", "r", stdin);
+#ifdef NDEBUG
+	}
+#endif
 
 	uintptr_t BaseAddress = reinterpret_cast<uintptr_t>(GetModuleHandle(0));
 
