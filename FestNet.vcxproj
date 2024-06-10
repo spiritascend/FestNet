@@ -144,6 +144,9 @@
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dependencies\curl\curl.h" />
+    <ClInclude Include="Dependencies\curl\curlver.h" />
+    <ClInclude Include="Dependencies\curl\system.h" />
     <ClInclude Include="Dependencies\globaloffsets.h" />
     <ClInclude Include="Dependencies\memcury.h" />
     <ClInclude Include="Dependencies\minhook\MinHook.h" />

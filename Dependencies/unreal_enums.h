@@ -432,3 +432,15 @@ enum EConnectionState
 	USOCK_Pending = 2, // Connection is awaiting connection.
 	USOCK_Open = 3, // Connection is open.
 };
+
+enum EPilgrimQuickplayStateMachine_NameState : int {
+	PilgrimState_Loading = 382935,
+	PilgrimState_PreGame = 382957,
+	PilgrimState_PreIntro = 382979,
+	PilgrimState_Intro = 383001,
+	PilgrimState_SongGameplay = 383022,
+	PilgrimState_Outro = 383046,
+	PilgrimState_SongResult = 383067,
+	PilgrimState_SetResults = 383091,
+	PilgrimState_Request_StateDone = 383114,
+};

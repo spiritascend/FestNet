@@ -2,6 +2,7 @@
 
 
 #include "unreal_enums.h"
+#include "globaloffsets.h"
 
 
 
@@ -63,21 +64,6 @@ public:
 		this->Count = NewArray.Count;
 		this->Max = NewArray.Count;
 	}
-
-
-
-	inline void Remove(T InData)
-	{
-		TArray<T> NewArray;
-		for (size_t i = 0; i < this->Count; ++i)
-		{
-			if (this->operator[](i) != InData)
-			{
-				NewArray.Add(this->operator[](i));
-			}
-		}
-		this = NewArray;
-	}
 };
 
 struct FString : private TArray<wchar_t>
@@ -124,6 +110,12 @@ class FName
 public:
 	int32_t ComparisonIndex;
 	int32_t Number;
+
+	inline std::string ToString() const {
+		FString outname;
+		reinterpret_cast<__int64(*)(const FName*, FString*)>(Offsets::FName_ToString)(this,&outname);
+		return outname.ToString();
+	}
 };
 
 
@@ -136,6 +128,32 @@ public:
 	UObject* Class;
 	FName    Name;
 	class UObject* Outer;
+
+	std::string GetName()
+	{
+		return Name.ToString();
+	}
+
+	std::string GetFullName()
+	{
+		std::string temp;
+
+		for (auto outer = Outer; outer; outer = outer->Outer)
+		{
+			temp = outer->GetName() + "." + temp;
+		}
+
+		temp = reinterpret_cast<UObject*>(Class)->GetName() + " " + temp + this->GetName();
+		return temp;
+	}
+
+	inline bool ProcessEvent(UObject* pFunction, void* pParams)
+	{
+		auto vtable = *reinterpret_cast<void***>(this);
+		auto ProcesseventVtable = static_cast<void(*)(void*, void*, void*)>(vtable[Offsets::ProcessEvent_VTableIndex]); if (!ProcesseventVtable) return false;
+		ProcesseventVtable(this, pFunction, pParams);
+		return true;
+	}
 };
 
 
@@ -287,4 +305,27 @@ struct FNameNativePtrPair
 {
 	const char* NameUTF8;
 	FNativeFuncPtr Pointer;
+};
+
+
+struct FPilgrimHistogramSample final {
+	int32_t OffsetMs;
+	int32_t NumSamples;
+};
+
+
+struct FPilgrimQuickplayPlayerPerformanceData {
+	float Accuracy;
+	float AverageOffset;
+	float StandardDeviation;
+	bool FullCombo;
+	uint8_t Pad_9605[0x3];
+	int32_t NotesHit;
+	int32_t NotesPassed;
+	int32_t NotesMissed;
+	int32_t TotalNotes;
+	int32_t LongestStreak;
+	float TimeInOverdriveMs;
+	TArray <FPilgrimHistogramSample> HistogramSamples;
+	TArray <int32_t> AccuracyTierCounts;
 };

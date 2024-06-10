@@ -1,4 +1,5 @@
 #include "hooks.hpp"
+#include <iostream>
 
 DWORD WINAPI MainThread(LPVOID param) {
 	// sleep 5 seconds so UE can prepare itself (if we load at process start rather than post-launch injection)
@@ -28,7 +29,8 @@ DWORD WINAPI MainThread(LPVOID param) {
 		Offsets::UAC_SendClientHello = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"UACNetworkComponent.SendClientHello", false))->ExecFunction;
 		Offsets::UAC_SendPacketToClient = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"UACNetworkComponent.SendPacketToClient", false))->ExecFunction;
 		Offsets::UAC_SendPacketToServer = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"UACNetworkComponent.SendPacketToServer", false))->ExecFunction;
-
+		Offsets::ProcessEvent_VTableIndex = GetProcessEventIndexFromObject(StaticFindObject(nullptr, nullptr, L"CoreUObject.Object", false));
+		
 		if (Hooks::ApplyHooks())
 		{
 			printf("Applied Hooks\n");
