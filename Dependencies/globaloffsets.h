@@ -19,10 +19,16 @@ namespace Offsets {
 	static uintptr_t ClearHitOffsetAverage;
 	static uintptr_t StaticLoadObject;
 	static uintptr_t CurlEasySetOpt;
+	static uintptr_t CurlEasyGetInfo;
 	static uintptr_t BroadcastNetworkFailure;
 	static uintptr_t ClientWasKickedNative;
 	static uintptr_t GetObjectsOfClass;
 	static uintptr_t ReturnToMainMenuError;
+
+	static uintptr_t ReceiveResponseBodyCallback;
+	static uintptr_t ReceiveResponseHeaderCallback;
+	static uintptr_t CurlHttpRequestSetupRequest;
+	static uintptr_t CurlHttpRequestFinishRequest;
 
 
 	static uintptr_t ClientWasKicked;
@@ -60,6 +66,21 @@ namespace Offsets {
 
 		CurlEasySetOpt = Memcury::Scanner::FindPattern("89 54 24 10 4C 89 44 24 18 4C 89 4C 24 20 48 83 EC 28 48 85 C9 75 08 8D 41 2B 48 83 C4 28 C3 4C").Get();
 		Check("CurlEasySetOpt", CurlEasySetOpt);
+		
+		CurlEasyGetInfo = Memcury::Scanner::FindPattern("8B C6 25 00 00 F0 00 ").ScanFor({ 0x89, 0x54, 0x24, 0x10 }, false).Get();
+		Check("CurlEasyGetInfo", CurlEasyGetInfo);
+
+		ReceiveResponseBodyCallback = Memcury::Scanner::FindStringRef(L"STAT_FCurlHttpRequest_StaticReceiveResponseBodyCallback").ScanFor({ 0x48, 0x8B, 0xC4 }, false).Get();
+		Check("ReceiveResponseBodyCallback", ReceiveResponseBodyCallback);
+
+		ReceiveResponseHeaderCallback = Memcury::Scanner::FindStringRef(L"STAT_FCurlHttpRequest_StaticReceiveResponseHeaderCallback").ScanFor({ 0x48, 0x89, 0x5C, 0x24 }, false).Get();
+		Check("ReceiveResponseHeaderCallback", ReceiveResponseHeaderCallback);
+
+		CurlHttpRequestSetupRequest = Memcury::Scanner::FindStringRef(L"STAT_FCurlHttpRequest_SetupRequestHttpThread").ScanFor({ 0x48, 0x8B, 0xC4 }, false).Get();
+		Check("CurlHttpRequestSetupRequest", CurlHttpRequestSetupRequest);
+
+		CurlHttpRequestFinishRequest = Memcury::Scanner::FindStringRef(L"STAT_FCurlHttpRequest_FinishRequest").ScanFor({ 0x48, 0x8B, 0xC4 }, false).Get();
+		Check("CurlHttpRequestFinishRequest", CurlHttpRequestFinishRequest);
 
 		BroadcastNetworkFailure = Memcury::Scanner::FindStringRef(L"UIpNetConnection::HandleSocketSendResult: Socket->SendTo failed with error %i (%s). %s Connection will be closed during next Tick()!").ScanFor({ 0xE8 }, true, 2).RelativeOffset(1).Get();
 		Check("BroadcastNetworkFailure", BroadcastNetworkFailure);

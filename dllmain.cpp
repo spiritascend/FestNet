@@ -26,7 +26,6 @@ DWORD WINAPI MainThread(LPVOID param) {
 		Offsets::ClientWasKicked = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"PlayerController.ClientWasKicked", false))->ExecFunction;
 		Offsets::OnControlMappingsRebuilt = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"PilgrimGame.OnControlMappingsRebuilt", false))->ExecFunction;
 		Offsets::UAC_SendClientHello = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"UACNetworkComponent.SendClientHello", false))->ExecFunction;
-		Offsets::UAC_SendClientHello = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"UACNetworkComponent.SendClientHello", false))->ExecFunction;
 		Offsets::UAC_SendPacketToClient = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"UACNetworkComponent.SendPacketToClient", false))->ExecFunction;
 		Offsets::UAC_SendPacketToServer = (uintptr_t)static_cast<UFunction*>(StaticFindObject(nullptr, nullptr, L"UACNetworkComponent.SendPacketToServer", false))->ExecFunction;
 		Offsets::ProcessEvent_VTableIndex = GetProcessEventIndexFromObject(StaticFindObject(nullptr, nullptr, L"CoreUObject.Object", false));

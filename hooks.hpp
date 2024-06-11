@@ -27,6 +27,7 @@ namespace Hooks {
     static void (*ClientReturnToMainMenu)(UObject* PlayerController, __int64 Reason);
     static void (*ReturnToMainMenuError)(UObject* PlayerController, wchar_t** Reason);
     static CURLcode(*CurlEasySetOpt)(CURL* curl, CURLoption option, ...);
+    static int (*CurlEasyGetInfo)(CURL* handle, CURLINFO info, long* resp);
 
 
 
@@ -108,7 +109,7 @@ namespace Hooks {
        return;
    }
 
-   inline CURLcode CurlEasySetOpt_Hook(CURL* curl, CURLoption option, ...)
+   static CURLcode CurlEasySetOpt_Hook(CURL* curl, CURLoption option, ...)
    {
        va_list args;
        va_start(args, option);
@@ -117,6 +118,7 @@ namespace Hooks {
        {
            const char* url = va_arg(args, const char*);
 
+           // completely blackhole datarouter
            if (strstr(url, "datarouter") != nullptr) {
                url = "http://0.0.0.0/";
            }
@@ -128,6 +130,15 @@ namespace Hooks {
        va_end(args);
 
        return result;
+   }
+   
+   static int CurlEasyGetInfo_Hook(CURL* handle, CURLINFO info, long* resp)
+   {
+       int r = CurlEasyGetInfo(handle, info, resp);
+       // file:/// URLs will have a response code of 0, game checks for 2xx success code, oops
+       if (info == CURLINFO_RESPONSE_CODE && *resp == 0)
+           *resp = 200;
+       return r;
    }
 
    static bool ApplyHooks()
@@ -165,8 +176,8 @@ namespace Hooks {
         MH_CreateHook((LPVOID)Offsets::CurlEasySetOpt, CurlEasySetOpt_Hook, (LPVOID*)&CurlEasySetOpt);
         MH_EnableHook((LPVOID)Offsets::CurlEasySetOpt);
 
-        MH_CreateHook((LPVOID)Offsets::UAC_SendClientHello, UACFunc_Hook, (LPVOID*)&UACExec);
-        //MH_EnableHook((LPVOID)Offsets::UAC_SendClientHello);
+        MH_CreateHook((LPVOID)Offsets::CurlEasyGetInfo, CurlEasyGetInfo_Hook, (LPVOID*)&CurlEasyGetInfo);
+        MH_EnableHook((LPVOID)Offsets::CurlEasyGetInfo);
 
         MH_CreateHook((LPVOID)Offsets::UAC_SendClientHello, UACFunc_Hook, (LPVOID*)&UACExec);
         //MH_EnableHook((LPVOID)Offsets::UAC_SendClientHello);
