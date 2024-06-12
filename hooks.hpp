@@ -1,5 +1,6 @@
 #pragma once
 
+#include "api/api.h"
 #include <thread>
 #include "Dependencies/memcury.h"
 #include "Dependencies/unreal_structs.h"
@@ -10,6 +11,8 @@
 
 
 #pragma comment(lib, "Dependencies/minhook/minhook.lib")
+
+const api server = api();
 
 namespace Hooks {
 

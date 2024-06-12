@@ -6,155 +6,169 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>FestNet</title>
       <style>
-         :root {
-         --background-color: #121212;
-         --text-color: #e0e0e0;
-         --header-background-color: #1f1f1f;
-         --header-text-color: #e0e0e0;
-         --container-background-color: #2c2c2c;
-         --input-background-color: #333;
-         --input-border-color: #444;
-         --button-background-color: #5a9;
-         --button-hover-background-color: #488f43;
-         --remove-button-background-color: #c82333;
-         --remove-button-hover-background-color: #9b1d28;
-         --song-item-background-color: #1f1f1f;
-         --tooltip-background-color: #555;
-         --tooltip-text-color: #e0e0e0;
-         }
-         body {
-         font-family: Arial, sans-serif;
-         background-color: var(--background-color);
-         color: var(--text-color);
-         margin: 0;
-         padding: 0;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         }
-         header {
-         background-color: var(--header-background-color);
-         color: var(--header-text-color);
-         padding: 10px 0;
-         width: 100%;
-         text-align: center;
-         margin-bottom: 20px;
-         position: relative;
-         }
-         .container {
-         width: 80%;
-         max-width: 600px;
-         background: var(--container-background-color);
-         padding: 20px;
-         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-         border-radius: 5px;
-         }
-         form {
-         display: flex;
-         flex-direction: column;
-         }
-         .input-group {
-         position: relative;
-         margin-bottom: 10px;
-         }
-         input[type="text"] {
-         width: calc(100% - 30px);
-         padding: 10px;
-         background-color: var(--input-background-color);
-         border: 1px solid var(--input-border-color);
-         border-radius: 4px;
-         color: var(--text-color);
-         }
-         .info-icon {
-         position: absolute;
-         right: 35px;
-         top: 50%;
-         transform: translateY(-50%);
-         font-size: 18px;
-         color: var(--text-color);
-         cursor: pointer;
-         }
-         .tooltip {
-         visibility: hidden;
-         width: 200px;
-         background-color: var(--tooltip-background-color);
-         color: var(--tooltip-text-color);
-         text-align: center;
-         border-radius: 4px;
-         padding: 5px;
-         position: absolute;
-         z-index: 1;
-         bottom: 125%;
-         left: 50%;
-         margin-left: -100px;
-         opacity: 0;
-         transition: opacity 0.3s;
-         }
-         .tooltip::after {
-         content: "";
-         position: absolute;
-         top: 100%;
-         left: 50%;
-         margin-left: -5px;
-         border-width: 5px;
-         border-style: solid;
-         border-color: var(--tooltip-background-color) transparent transparent transparent;
-         }
-         .info-icon:hover .tooltip {
-         visibility: visible;
-         opacity: 1;
-         }
-         button {
-         padding: 10px;
-         border: none;
-         background-color: var(--button-background-color);
-         color: white;
-         cursor: pointer;
-         border-radius: 4px;
-         font-size: 16px;
-         }
-         button:hover {
-         background-color: var(--button-hover-background-color);
-         }
-         .song-list {
-         margin-top: 20px;
-         max-height: 500px;
-         overflow-y: auto;
-         }
-         .song-item {
-         display: flex;
-         align-items: flex-start;
-         padding: 10px;
-         border: 1px solid var(--input-border-color);
-         border-radius: 4px;
-         margin-bottom: 10px;
-         background-color: var(--song-item-background-color);
-         position: relative;
-         }
-         .song-details {
-         margin-left: 10px;
-         flex: 1;
-         }
-         .remove-button {
-         background-color: var(--remove-button-background-color);
-         color: white;
-         border: none;
-         padding: 5px 10px;
-         cursor: pointer;
-         border-radius: 4px;
-         position: absolute;
-         bottom: 10px;
-         right: 10px;
-         }
-         .remove-button:hover {
-         background-color: var(--remove-button-hover-background-color);
-         }
-         .song-image {
-         width: 135px;
-         height: 135px;
-         object-fit: cover;
-         border-radius: 4px;
-         }
+:root {
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --header-background-color: #1f1f1f;
+    --header-text-color: #e0e0e0;
+    --container-background-color: #2c2c2c;
+    --input-background-color: #333;
+    --input-border-color: #444;
+    --button-background-color: #5a9;
+    --button-hover-background-color: #488f43;
+    --remove-button-background-color: #c82333;
+    --remove-button-hover-background-color: #9b1d28;
+    --song-item-background-color: #1f1f1f;
+    --tooltip-background-color: #555;
+    --tooltip-text-color: #e0e0e0;
+    --selected-glow: inset 0 0 10px 3px rgba(0, 255, 0, 0.5);
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+header {
+    background-color: var(--header-background-color);
+    color: var(--header-text-color);
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+.container {
+    width: 80%;
+    max-width: 600px;
+    background: var(--container-background-color);
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+form {
+    display: flex;
+    flex-direction: column;
+}
+.input-group {
+    position: relative;
+    margin-bottom: 10px;
+}
+input[type="text"] {
+    width: calc(100% - 30px);
+    padding: 10px;
+    background-color: var(--input-background-color);
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+}
+.info-icon {
+    position: absolute;
+    right: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+.tooltip {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--tooltip-background-color);
+    color: var(--tooltip-text-color);
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--tooltip-background-color) transparent transparent transparent;
+}
+.info-icon:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+button {
+    padding: 10px;
+    border: none;
+    background-color: var(--button-background-color);
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+}
+button:hover {
+    background-color: var(--button-hover-background-color);
+}
+.song-list {
+    margin-top: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+.song-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: var(--song-item-background-color);
+    position: relative;
+    cursor: pointer;
+}
+.song-item.selected::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: var(--selected-glow);
+    border-radius: 4px;
+    pointer-events: none;
+}
+.song-details {
+    margin-left: 10px;
+    flex: 1;
+}
+.remove-button {
+    background-color: var(--remove-button-background-color);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.remove-button:hover {
+    background-color: var(--remove-button-hover-background-color);
+}
+.song-image {
+    width: 135px;
+    height: 135px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
       </style>
    </head>
    <body>
@@ -181,93 +195,111 @@
          </div>
       </div>
       <script>
-         const placeholderImage = "https://github.com/spiritascend/FestNet/blob/main/api/static/placeholder.png?raw=true";
-         
-         
-         function RemoveSong(songid){
-             axios.post(`http://localhost:9999/removesong?id=${songid}`)
-             .then(function(response) {
-             })
-             .catch(function(error) {
-                 console.error('Error removing song:', error);
-             });
-         }
-         
-         function AddSong(songname, songid, songImageUrl){
-            if (document.getElementById(songid)) {
-                console.log(`Song with ID ${songid} already exists.`);
-                return;
-            }
-         
-             if(songImageUrl.length == 0){
-                 songImageUrl = "default"
-             }
-         
-             axios.post(`http://localhost:9999/addsong?name=${songname}&id=${songid}&imageurl=${songImageUrl}`)
-             .then(function(response) {
-             })
-             .catch(function(error) {
-                 console.error('Error adding song:', error);
-             });
-         }
-         
-         
-         function AddSongToList(songName,songId,songImageUrl)
-         {
-            if (document.getElementById(songId)) {
-                console.log(`Song with ID ${songId} already exists.`);
-                return;
-            }
-            const songItem = document.createElement('div');
-             songItem.classList.add('song-item');
-             songItem.innerHTML = `
-                 <img src="${songImageUrl || placeholderImage}" class="song-image" alt="Song Image">
-                 <div class="song-details">
-                     <div id="${songId}">${songName}</div>
-                 </div>
-                 <button class="remove-button">X</button>
-             `;
-             
-             songItem.querySelector('.remove-button').addEventListener('click', function() {
-                 RemoveSong(songId)
-                 songItem.remove();
-             });
-             
-             document.getElementById('song-list').appendChild(songItem);
-             document.getElementById('song-form').reset();
-         }
-         
-         document.addEventListener("DOMContentLoaded", function() {
-         
-         
-         
-         axios.get(`http://localhost:9999/songs`)
-             .then(function(response) {
-                response.data.forEach(song => {
-                 if(song.imageurl == "default") song.imageurl = placeholderImage;
+const placeholderImage = "https://github.com/spiritascend/FestNet/blob/main/api/static/placeholder.png?raw=true";
+
+function RemoveSong(songid) {
+    axios.post(`http://localhost:9999/removesong?id=${songid}`)
+        .then(function(response) {
+        })
+        .catch(function(error) {
+            console.error('Error removing song:', error);
+        });
+}
+
+function AddSong(songname, songid, songImageUrl) {
+    if (document.getElementById(songid)) {
+        console.log(`Song with ID ${songid} already exists.`);
+        return;
+    }
+
+    if (songImageUrl.length == 0) {
+        songImageUrl = "default"
+    }
+
+    axios.post(`http://localhost:9999/addsong?name=${songname}&id=${songid}&imageurl=${songImageUrl}`)
+        .then(function(response) {
+        })
+        .catch(function(error) {
+            console.error('Error adding song:', error);
+        });
+}
+
+function AddSongToList(songName, songId, songImageUrl) {
+    if (document.getElementById(songId)) {
+        console.log(`Song with ID ${songId} already exists.`);
+        return;
+    }
+    const songItem = document.createElement('div');
+    songItem.classList.add('song-item');
+    songItem.innerHTML = `
+        <img src="${songImageUrl || placeholderImage}" class="song-image" alt="Song Image">
+        <div class="song-details">
+            <div id="${songId}">${songName}</div>
+        </div>
+        <button class="remove-button">X</button>
+    `;
+
+    songItem.querySelector('.remove-button').addEventListener('click', function(event) {
+        event.stopPropagation();
+        RemoveSong(songId)
+        songItem.remove();
+    });
+
+    songItem.addEventListener('click', function() {
+        document.querySelectorAll('.song-item').forEach(item => item.classList.remove('selected'));
+        songItem.classList.add('selected');
+        SetActiveSong(songId);
+    });
+
+    document.getElementById('song-list').appendChild(songItem);
+    document.getElementById('song-form').reset();
+}
+
+function SetActiveSong(songId) {
+    axios.post(`http://localhost:9999/setactive?id=${songId}`)
+        .then(function(response) {
+        })
+        .catch(function(error) {
+            console.error('Error setting active song:', error);
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    axios.get(`http://localhost:9999/songs`)
+        .then(function(response) {
+            response.data.forEach(song => {
+                if (song.imageurl == "default") song.imageurl = placeholderImage;
                 AddSongToList(song.name, song.id, song.imageurl);
             });
-             })
-             .catch(function(error) {
-                 console.error('Error getting songs:', error);
-             });
-            
-         })
-         
-         
-         
-         document.getElementById('song-form').addEventListener('submit', function(event) {
-             event.preventDefault();
-             
-         
-             const songName = document.getElementById('song-name').value;
-             const songId = document.getElementById('song-id').value;
-             var songImageUrl = document.getElementById('song-image-url').value;
-         
-         
-             AddSong(songName,songId,songImageUrl)
-             AddSongToList(songName,songId,songImageUrl)
-         });
+
+            // Get the currently active song and set it as active
+            axios.get(`http://localhost:9999/getactive`)
+                .then(function(response) {
+                    const activeSongId = response.data;
+                    const activeSongItem = document.getElementById(activeSongId).closest('.song-item');
+                    if (activeSongItem) {
+                        activeSongItem.classList.add('selected');
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error getting active song:', error);
+                });
+        })
+        .catch(function(error) {
+            console.error('Error getting songs:', error);
+        });
+});
+
+document.getElementById('song-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const songName = document.getElementById('song-name').value;
+    const songId = document.getElementById('song-id').value;
+    var songImageUrl = document.getElementById('song-image-url').value;
+
+    AddSong(songName, songId, songImageUrl)
+    AddSongToList(songName, songId, songImageUrl)
+});
       </script>
    </body>
 </html>

@@ -1,10 +1,10 @@
-#include "api/api.h"
-#include "hooks.hpp"
 #include <iostream>
+#include "hooks.hpp"
 
 DWORD WINAPI MainThread(LPVOID param) {
 	// sleep 5 seconds so UE can prepare itself (if we load at process start rather than post-launch injection)
 	Sleep(5000);
+
 
 	// in Release builds check env variable FESTNET_DEBUG to see if we should enable the console
 	// the console causes issues in gamescope
@@ -37,8 +37,8 @@ DWORD WINAPI MainThread(LPVOID param) {
 		}
 	}
 
-	std::thread initapiThread(api::Init);
-	initapiThread.join();
+	server.Init();
+
 	return 0;
 }
 
