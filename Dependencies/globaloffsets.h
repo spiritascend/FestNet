@@ -24,6 +24,8 @@ namespace Offsets {
 	static uintptr_t ClientWasKickedNative;
 	static uintptr_t GetObjectsOfClass;
 	static uintptr_t ReturnToMainMenuError;
+	static uintptr_t GetLocalPlayer;
+	static uintptr_t ExecuteConsoleCommand;
 
 	static uintptr_t ReceiveResponseBodyCallback;
 	static uintptr_t ReceiveResponseHeaderCallback;
@@ -93,6 +95,12 @@ namespace Offsets {
 
 		ReturnToMainMenuError = Memcury::Scanner::FindStringRef(L"ReturnToMenuError-%s-%s").ScanFor({ 0x48, 0x8B, 0xC4 }, false).Get();
 		Check("ReturnToMainMenuError", ReturnToMainMenuError);
+
+		GetLocalPlayer = Memcury::Scanner::FindStringRef(L"cheat GiveAllIngredients 99").ScanFor({ 0xE8 }, false).RelativeOffset(1).Get();
+		Check("GetLocalPlayer", GetLocalPlayer);
+
+		ExecuteConsoleCommand = Memcury::Scanner::FindStringRef(L"cheat GiveAllIngredients 99").ScanFor({ 0xE8 }, true,1).RelativeOffset(1).Get();
+		Check("ExecuteConsoleCommand", ExecuteConsoleCommand);
 		
 	}
 }

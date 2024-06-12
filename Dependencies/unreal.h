@@ -13,6 +13,16 @@ static UObject* StaticLoadObject(UObject* Class, UObject* InOuter, const TCHAR* 
 	return reinterpret_cast<UObject * (__fastcall*)(UObject*, UObject*, const TCHAR*, const TCHAR*, uint32_t, void*, bool, void*)>(Offsets::StaticLoadObject)(Class, InOuter, Name, FileName, LoadFlags, Sandbox, bAllowObjectReconciliation, InstancingContext);
 }
 
+
+static UObject* GetLocalPlayer() {
+	return reinterpret_cast<UObject * (__fastcall*)()>(Offsets::GetLocalPlayer)();
+}
+
+FString* __fastcall UPlayer_ConsoleCommand(UObject* Player, FString* result, const FString* Cmd, bool bWriteToLog) {
+	return reinterpret_cast<FString*(__fastcall*)(UObject*,FString*,const FString*,bool)>(Offsets::ExecuteConsoleCommand)(Player,result,Cmd,bWriteToLog);
+}
+
+
 static std::string QuickplayState_ToString(EPilgrimQuickplayStateMachine_NameState StateID) {
 	switch (StateID) {
 	case EPilgrimQuickplayStateMachine_NameState::PilgrimState_Loading:
