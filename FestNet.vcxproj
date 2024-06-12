@@ -131,6 +131,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,13 +142,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="api\api.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="api\api.h" />
     <ClInclude Include="Dependencies\curl\curl.h" />
     <ClInclude Include="Dependencies\curl\curlver.h" />
     <ClInclude Include="Dependencies\curl\system.h" />
     <ClInclude Include="Dependencies\globaloffsets.h" />
+    <ClInclude Include="Dependencies\globals.h" />
+    <ClInclude Include="Dependencies\httplib.h" />
+    <ClInclude Include="Dependencies\json.hpp" />
     <ClInclude Include="Dependencies\memcury.h" />
     <ClInclude Include="Dependencies\minhook\MinHook.h" />
     <ClInclude Include="Dependencies\unreal.h" />

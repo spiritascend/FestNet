@@ -1,7 +1,9 @@
+#include "api/api.h"
 #include "hooks.hpp"
 #include <iostream>
 
 DWORD WINAPI MainThread(LPVOID param) {
+	api::Init();
 	// sleep 5 seconds so UE can prepare itself (if we load at process start rather than post-launch injection)
 	Sleep(5000);
 
