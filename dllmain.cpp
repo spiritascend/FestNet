@@ -3,14 +3,6 @@
 #include <iostream>
 
 DWORD WINAPI MainThread(LPVOID param) {
-
-	AllocConsole();
-	FILE* Dummy;
-	freopen_s(&Dummy, "CONOUT$", "w", stdout);
-	freopen_s(&Dummy, "CONIN$", "r", stdin);
-
-
-
 	// sleep 5 seconds so UE can prepare itself (if we load at process start rather than post-launch injection)
 	Sleep(5000);
 
