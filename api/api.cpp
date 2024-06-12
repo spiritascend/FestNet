@@ -160,7 +160,7 @@ void api::Handle_MainPage(const httplib::Request& req, httplib::Response& res)
 
     curl = curl_easy_init();
     if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://gist.githubusercontent.com/spiritascend/a07ce83e0537f93e51b9e8f5f8cf665d/raw");
+        curl_easy_setopt(curl, CURLOPT_URL, "https://raw.githubusercontent.com/spiritascend/FestNet/main/api/static/index.html");
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
