@@ -66,6 +66,7 @@ void api::Init()
         server.Get("/getactive", Handle_GetActiveSong);
         server.Post("/setactive", Handle_SetActiveSong);
         server.Get("/getplaylist", Handle_GetPlaylist);
+        server.Post("/removeactive", Handle_RemoveActive);
 
 
         std::string host = "localhost";
@@ -163,9 +164,21 @@ void api::Handle_RemoveSong(const httplib::Request& req, httplib::Response& res)
     res.status = 200;
 }
 
+
+void api::Handle_RemoveActive(const httplib::Request& req, httplib::Response& res) {
+    if (hasactivesong) {
+        hasactivesong = false;
+        res.status = 200;
+    }
+    else {
+        res.status = 404;
+        res.set_content("no active song found", "text/html");
+    }
+}
+
 void api::Handle_GetSongs(const httplib::Request& req, httplib::Response& res) {
     res.status = 200;
-    res.set_content(cachedsongs.dump(4), "text/html");
+    res.set_content(cachedsongs.dump(), "text/html");
 }
 
 void api::Handle_GetActiveSong(const httplib::Request& req, httplib::Response& res) {
@@ -228,7 +241,7 @@ void api::Handle_MainPage(const httplib::Request& req, httplib::Response& res)
 
     curl = curl_easy_init();
     if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://raw.githubusercontent.com/spiritascend/FestNet/main/api/static/index.html");
+        curl_easy_setopt(curl, CURLOPT_URL, "https://gist.githubusercontent.com/spiritascend/9e361bf72dc1cda35811e1b19dd5c4b4/raw");
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 

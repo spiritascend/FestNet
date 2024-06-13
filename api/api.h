@@ -73,10 +73,14 @@ private:
 	static void Handle_AddSong(const httplib::Request& req, httplib::Response& res);
 	static void Handle_RemoveSong(const httplib::Request& req, httplib::Response& res);
 	static void Handle_SetActiveSong(const httplib::Request& req, httplib::Response& res);
+	static void Handle_RemoveActive(const httplib::Request& req, httplib::Response& res);
 
 
 	static void Handle_GetSongs(const httplib::Request& req, httplib::Response& res);
 	static void Handle_GetActiveSong(const httplib::Request& req, httplib::Response& res);
 	static void Handle_GetPlaylist(const httplib::Request& req, httplib::Response& res);
+
+
+
 };
 
